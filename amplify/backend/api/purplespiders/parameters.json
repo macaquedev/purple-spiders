@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "purplespiders",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authpurplespiderscd4ed529",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

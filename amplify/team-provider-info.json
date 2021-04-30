@@ -1,0 +1,25 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-purplespiders-dev-190733-authRole",
+      "UnauthRoleArn": "arn:aws:iam::039774460548:role/amplify-purplespiders-dev-190733-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::039774460548:role/amplify-purplespiders-dev-190733-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-purplespiders-dev-190733-deployment",
+      "UnauthRoleName": "amplify-purplespiders-dev-190733-unauthRole",
+      "StackName": "amplify-purplespiders-dev-190733",
+      "StackId": "arn:aws:cloudformation:eu-west-1:039774460548:stack/amplify-purplespiders-dev-190733/20dc6c30-a5f1-11eb-b35e-02b3c888d7c3",
+      "AmplifyAppId": "dttjeft8nd5as"
+    },
+    "categories": {
+      "auth": {
+        "purplespiderscd4ed529": {
+          "userPoolId": "eu-west-1_omnmsZjFK",
+          "userPoolName": "purplespiders",
+          "webClientId": "1f5pffmtd1tu6egv0le6sdj64v",
+          "nativeClientId": "1f5pffmtd1tu6egv0le6sdj64v"
+        }
+      }
+    }
+  }
+}

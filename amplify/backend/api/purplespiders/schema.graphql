@@ -1,0 +1,59 @@
+# type Task
+#   @model
+#   @auth(
+#     rules: [
+#       { allow: groups, groups: ["Managers"], queries: null, mutations: [create, update, delete] }
+#       { allow: groups, groups: ["Employees"], queries: [get, list], mutations: null }
+#     ]
+#   ) {
+#   id: ID!
+#   title: String!
+#   description: String
+#   status: String
+# }
+
+# type PrivateNote @model @auth(rules: [{ allow: owner }]) {
+#   id: ID!
+#   content: String!
+# }
+
+type User 
+  @model 
+  @auth(
+    rules: [
+      { allow: owner },
+      { allow: groups, groups: ["Admin"] },
+    ]
+  ) {
+  id: ID!
+  name: String!
+}
+
+
+type Review
+  @model
+  @auth(
+    rules: [
+      { allow: public, provider: apiKey },
+      { allow: groups, groups: ["Admin"] },
+    ]
+  ) {
+  id: ID!
+  rating: Int!
+  author: String!
+  content: String!
+}
+
+type Music 
+  @model
+  @auth(
+    rules: [
+      { allow: public, provider: apiKey },
+      { allow: groups, groups: ["Admin"] },
+    ]
+  ) {
+  id: ID!
+  name: String!
+  link: AWSURL!
+  isFanClubOnly:  Boolean!
+}

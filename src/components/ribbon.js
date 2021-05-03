@@ -1,11 +1,10 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
-import { Link, navigate } from 'gatsby'
+import { navigate } from 'gatsby'
 import ScaleText from "react-scale-text"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import Button from '@material-ui/core/Button'
 import purple from "@material-ui/core/colors/purple"
-import { isMobile } from 'react-device-detect'
 
 
 const theme = {
@@ -65,41 +64,19 @@ const theme = {
 }
 
 export const Ribbon = () => {
-    return isMobile ? (
-        <Grid container style={{ display: "flex", flexWrap: "wrap"}}>
-            <Grid container justify="space-between" alignItems="center" alignContent="center" style={theme.gridHead}>
-                <Grid container xs={12} style={theme.h1Container}>
-                    <Button style={theme.h1}>
-                        <ScaleText maxFontSize={40}>
-                            <Link to={"/about-us"} style={{textDecoration: "none"}}>
-                                PURPLE SPIDERS    
-                            </Link>
-                        </ScaleText>
-                    </Button>
-                </Grid>
-                <Grid container xs={12} style={theme.buttonContainer}>
-                    <Button color="primary" style={theme.buttons}>HOME</Button>
-                    <Button color="primary" style={theme.buttons}>ABOUT US</Button>
-                    <Button color="primary" style={theme.buttons}>OUR MUSIC</Button>
-                    <Button color="primary" style={theme.buttons}>FAN CLUB</Button>
-                </Grid>
-            </Grid>
-        </Grid>
-    ) : (
+    return (
         <Grid container justify="space-between" alignItems="center" alignContent="center" style={theme.gridHead}>
             <Grid container xs={5} style={theme.h1Container}>
-                <Button style={theme.h1}>
+                <Button style={theme.h1} onClick={() => navigate("/")}>
                     <ScaleText maxFontSize={80}>
-                        <Link to={"/about-us"} style={{textDecoration: "none"}}>
-                            PURPLE SPIDERS    
-                        </Link>
+                        PURPLE SPIDERS 
                     </ScaleText>
                 </Button>
             </Grid>
             <Grid container xs={7} style={theme.buttonContainer}>
-                <Button color="primary" style={theme.buttons}>HOME</Button>
-                <Button color="primary" style={theme.buttons}>ABOUT US</Button>
-                <Button color="primary" style={theme.buttons}>OUR MUSIC</Button>
+                <Button color="primary" style={theme.buttons} onClick={() => navigate("/")}>HOME</Button>
+                <Button color="primary" style={theme.buttons} onClick={() => navigate("/about-us/")}>ABOUT US</Button>
+                <Button color="primary" style={theme.buttons} onClick={() => navigate("/our-music/")}>OUR MUSIC</Button>
                 <Button color="primary" style={theme.buttons} onClick={() => navigate("/fan-club/")}>FAN CLUB</Button>
             </Grid>
         </Grid>

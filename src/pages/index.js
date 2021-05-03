@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import StarRatings from 'react-star-ratings'
 import { Ribbon } from '../components/ribbon'
-import { isMobile } from 'react-device-detect'
 import Band from '../images/purple-spiders.png'
 import Grid from '@material-ui/core/Grid'
 import Typography from "@material-ui/core/Typography"
@@ -138,42 +137,7 @@ export default class HomePage extends Component {
     }
 
     render() {
-        return isMobile ? (
-            <Grid container>
-                <Grid container style={{ display: "flex", flexWrap: "wrap"}}>
-                    <Ribbon />
-                </Grid>
-                <Grid container style={theme.gridBody} xs={12}>
-                    <Grid container xs={12}>
-                        <img src={Band} alt="Purple spiders standing in concert hall" style={theme.image} />
-                    </Grid>
-                    <Grid container xs={12}>
-                        <Grid container style={theme.reviewHeaderContainer}>
-                            <Typography style={theme.reviewHeader}>
-                                Our Reviews
-                            </Typography>
-                        </Grid>
-                        {
-                            this.state.reviews.map((review, i) => (
-                                <Grid container style={theme.reviewBodyContainer}>
-                                    <StarRatings rating={review.rating} starRatedColor="blue" starUnratedColor="#192300" />
-                                    <Typography style={theme.reviewBody}>
-                                        {review.content}
-                                    </Typography>
-                                </Grid>
-                            ))
-                        }
-                    </Grid>
-                </Grid>
-                <Grid style={theme.gridFooter} xs={12}>
-                    <Typography style={theme.copyright}>
-                        <ScaleText maxFontSize={20}>
-                            Copyright &copy; PURPLE SPIDERS 2021
-                        </ScaleText>
-                    </Typography>
-                </Grid>
-            </Grid>
-        ) : (
+        return (
             <Grid container>
                 <Grid container style={{ display: "flex", flexWrap: "wrap"}}>
                     <Ribbon />
@@ -189,11 +153,13 @@ export default class HomePage extends Component {
                             </Typography>
                         </Grid>
                         {
-                            this.state.reviews.map((review, i) => (
+                            this.state.reviews.map(review => (
                                 <Grid container style={theme.reviewBodyContainer}>
                                     <StarRatings rating={review.rating} starRatedColor="blue" starUnratedColor="#192300" />
                                     <Typography style={theme.reviewBody}>
                                         {review.content}
+                                        <br/>
+                                        --- {review.author}
                                     </Typography>
                                 </Grid>
                             ))

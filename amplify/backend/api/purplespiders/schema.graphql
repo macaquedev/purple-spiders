@@ -35,6 +35,6 @@ type Music
   ) {
   id: ID!
   name: String!
-  link: String!
+  link: AWSURL!
   isFanClubOnly: Boolean!
 }

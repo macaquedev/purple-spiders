@@ -4,13 +4,16 @@ import { Ribbon } from '../components/ribbon'
 import ScaleText from "react-scale-text"
 import Grid from '@material-ui/core/Grid'
 import Typography from "@material-ui/core/Typography"
-import IconButton from '@material-ui/core/IconButton'
+import Button from '@material-ui/core/Button'
 import purple from "@material-ui/core/colors/purple"
-import Band from '../images/purple-spiders-3.png'
-import GetApp from '@material-ui/icons/GetApp'
-import { isMobile } from 'react-device-detect'
+import Band from '../images/purple-spiders-2.png'
+import { PlayArrow } from '@material-ui/icons/'
+import Amplify, { API, graphqlOperation } from 'aws-amplify'
+import awsconfig from '../aws-exports'
 import { fade } from "@material-ui/core/styles/colorManipulator"
+import { listMusics as ListMusics } from '../graphql/queries'
 
+Amplify.configure(awsconfig)
 
 const theme = {
     h1: {
@@ -37,6 +40,7 @@ const theme = {
     reviewBodyContainer: {
         display: "flex",
         justifyContent: "center",
+        marginTop: 50
     },
     reviewHeader: {
         fontFamily: "Heebo",
@@ -47,7 +51,6 @@ const theme = {
         whiteSpace: "nowrap",
         marginTop: 30,
         color: "#000000",
-        marginBottom: 10
     },
     reviewBody: {
         fontFamily: "Heebo",
@@ -56,11 +59,17 @@ const theme = {
         display: "flex",
         textAlign: "center",
         justifyContent: "center",
-        marginTop: 30,
         color: "#000000",
-        marginBottom: 30,
-        marginLeft: 20,
-        marginRight: 20
+    },
+    musicDownloadText: {
+        fontFamily: "Heebo",
+        fontWeight: 300,
+        fontSize: 28,
+        display: "flex",
+        textAlign: "center",
+        justifyContent: "center",
+        color: "#000000",
+        marginTop: 30
     },
     h1Container: {
         display: "flex",
@@ -70,11 +79,11 @@ const theme = {
     buttons: {
         fontFamily: "Heebo",
         fontWeight: 500,
-        maxWidth: '150px',
+        maxWidth: '300px',
         minWidth: '70px',
-        fontSize: '20px',
+        fontSize: '15px',
         display: "flex",
-        color: purple[500],
+        marginLeft: 30,
         "&:hover": {
             backgroundColor: fade(purple[500], 0.2),
             // Reset on touch devices, it doesn't add specificity
@@ -97,7 +106,20 @@ const theme = {
     },
     gridBody: {
         backgroundColor: purple[700]
-    }
+    },
+    gridFooter: {
+        backgroundColor: "#000000",
+        backgroundPosition: "right center",
+        justifyContent: "center",
+        display: "flex",
+        width: "98.7%",
+        height: "5%",
+
+    },
+    copyright: {
+        font: "Heebo",
+        color: "#ffffff"
+    },
 }
 
 export default withAuthenticator(class App extends Component {
@@ -106,67 +128,60 @@ export default withAuthenticator(class App extends Component {
         super(props)
         this.props = props
         this.state = {
-            reviews: []
+            music: []
         }
         this.mounted = true
     }
 
     async componentDidMount() {
         if (this.mounted) {
-            await this.getReviews()
+            await this.getMusic()
         }
     }
 
-    getMusic = async () => {
-        var data = await API.graphql(graphqlOperation(ListReviews))
-        this.setState({ reviews: data.data.listReviews.items.sort((a, b) => b.rating - a.rating).slice(0, 3) })
+    async getMusic() {
+        var data = await API.graphql(graphqlOperation(ListMusics))
+        this.setState({ music: data.data.listMusics.items.filter((item => item.isFanClubOnly === true))})
     }
 
     render() {
-        return isMobile ? (
+        return (
             <Grid container>
                 <Grid container style={{ display: "flex", flexWrap: "wrap"}}>
                     <Ribbon />
                 </Grid>
                 <Grid container style={theme.gridBody} xs={12}>
-                    <Grid container xs={12}>
+                    <Grid item xs={5}>
                         <img src={Band} alt="Purple spiders standing in concert hall" style={theme.image} />
                     </Grid>
-                </Grid>
-                <Grid style={theme.gridFooter} xs={12}>
-                    <Typography style={theme.copyright}>
-                        <ScaleText maxFontSize={20}>
-                            Copyright &copy; PURPLE SPIDERS 2021
-                        </ScaleText>
-                    </Typography>
-                </Grid>
-            </Grid>
-        ) : (
-            <Grid container>
-                <Grid container style={{ display: "flex", flexWrap: "wrap"}}>
-                    <Ribbon />
-                </Grid>
-                <Grid container style={theme.gridBody} xs={12}>
-                    <Grid container xs={5}>
-                        <img src={Band} alt="Purple spiders standing in concert hall" style={theme.image} />
-                    </Grid>
-                    <Grid container xs={7}>
+                    <Grid item xs={7}>
                         <Grid container style={theme.reviewHeaderContainer}>
                             <Typography style={theme.reviewHeader}>
                                 Welcome to the fan club!
                             </Typography>
+                            <Typography style={theme.musicDownloadText}>
+                                Thank you for signing up to the Fan Club! This allows you to download music that isn't available to non-Fan Club fans.
+                                <br/>
+                                <br/>
+                                <br/>
+                            </Typography>
                         </Grid>
-                            <Grid container style={theme.reviewBodyContainer}>
-                                <Typography style={theme.reviewBody}>
-                                    Thank you for signing up for the Fan Club! This allows you to download music that isn't available to non-Fan Club fans.
-
-                                </Typography>
-                            </Grid>
+                        <Grid container>
+                            {
+                                this.state.music.map(song => (
+                                    <Grid container style={theme.reviewBodyContainer}>
+                                        <Typography style={theme.reviewBody}>
+                                            {song.name}
+                                        </Typography>
+                                        <Button variant="primary" style={theme.buttons} startIcon={<PlayArrow />} href={song.link} target="_blank">
+                                            Play on SoundCloud
+                                        </Button>
+                                    </Grid>
+                                ))
+                            }
                         </Grid>
                     </Grid>
-                    <Grid container>
-
-                    </Grid>
+                </Grid>
                 <Grid style={theme.gridFooter} xs={12}>
                     <Typography style={theme.copyright}>
                         <ScaleText maxFontSize={20}>
